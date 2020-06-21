@@ -45,7 +45,7 @@ Create an app for a nonprofit of your choice that helps them take their processe
 1. A 3-minute demo video (hosted on YouTube, Facebook Video, Vimeo, or Youku). 
 Your video should include a demo of your working application via a step-by-step visual demo.
 
-2. A way to access your working application for judging and testing by providing a URL (THIS Github Repo) 
+2. A way to access your working application for judging and testing by providing a URL __(THIS Github Repo)__ 
 to the publicly visible code repository, including an applicable open source license. 
 https://opensource.org/licenses
 
