@@ -5,5 +5,8 @@ https://docusign2020.devpost.com/
 
 Collaborators:
 https://devpost.com/coltonehrman
+
+https://devpost.com/allopez7
+
 https://devpost.com/greenc123
 
