@@ -29,7 +29,7 @@ an open-source application using DocuSign’s eSignature API and, if applicable,
 
 ### Pre-Assessment App:
 This app should allow companies to self-assess whether they would qualify for FSC certification. 
-This app must use FSC data.
+This app must use [FSC data](https://fsc.org/en).
 
 ### Virtual Audit Qualification App:
 This app should use FSC-defined criteria and Esri geocoding data to help a company verify 
