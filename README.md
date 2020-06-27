@@ -11,6 +11,8 @@ https://www.youtube.com/watch?time_continue=8&v=MfiBJy16EZI&feature=emb_title
 
 Collaborators:
 
+https://devpost.com/joeystevens00
+
 https://devpost.com/axcasella
 
 https://devpost.com/coltonehrman
