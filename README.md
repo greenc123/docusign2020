@@ -21,8 +21,13 @@ https://devpost.com/allopez7
 
 https://devpost.com/greenc123
 
-# Submission Requirements
+Temp OAuth Token:
+https://developers.docusign.com/oauth-token-generator
 
+API Keys: 
+https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey 
+
+# Submission Requirements
 Choose at least one category to build (or update) 
 an open-source application using DocuSign’s eSignature API and, if applicable, FSC data.
 [DocuSign API](https://developers.docusign.com/esign-rest-api)
