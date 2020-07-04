@@ -1,51 +1,40 @@
-const docusign = require('docusign-esign')
-const bodyParser = require('body-parser')
-const express = require('express')
-const process = require('process')
-const path = require('path')
-const fs = require('fs')
-require('dotenv').config() 
+const docusign = require('docusign-esign');
+const bodyParser = require('body-parser');
+const express = require('express');
+const process = require('process');
+const path = require('path');
+const fs = require('fs');
+require('dotenv').config();
 
-const port = process.env.PORT || 3000
-const host = process.env.HOST || 'localhost'
-const app = express()
+const port = process.env.PORT || 3000;
+const host = process.env.HOST || 'localhost';
+const app = express();
 
-const basePath = 'https://demo.docusign.net/restapi'
-const envir = process.env;
+const basePath = 'https://demo.docusign.net/restapi';
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse applicaiton/json
-app.use(bodyParser.json())
-console.log(envir, 'envir')
+app.use(bodyParser.json());
 
 async function sendEnvelopeController(req, res) {
-  const {email, user} = req.body
-
-  console.log(req.body, 'body')
-  console.log(email, 'email')
-  console.log(user, 'user')
+  const { email, user } = req.body;
+  const errorMessages = [];
 
   if (!email) {
-    console.log("No Email found in req.body")
-    return res.status(400).json({"error": "no email found in req.body"})
+    errorMessages.push('No email found in req.body');
   }
 
   if (!user) {
-    console.log("No user found in req.body")
-    return res.status(400).json({"error": "no user found in req.body"})
+    errorMessages.push('No user found in req.body');
   }
 
-  const qp = req.query;
-  // Fill in these constants or use query parameters of ACCESS_TOKEN, ACCOUNT_ID, USER_FULLNAME, USER_EMAIL
-  // or environment variables.
+  if (errorMessages.length > 0) {
+    return res.status(400).json(JSON.stringify({ errors: errorMessages }));
+  }
 
-  console.log(envir, 'envir')
-  const {ACCESS_TOKEN, ACCOUNT_ID } = envir 
-
-  const signerName = user;
-  const signerEmail = email;
+  const { ACCESS_TOKEN, ACCOUNT_ID } = process.env;
 
   // The document you wish to send. Path is relative to the root directory of this repo.
   const fileName = 'demo_documents/World_Wide_Corp_lorem.pdf';
@@ -69,15 +58,15 @@ async function sendEnvelopeController(req, res) {
   envDef.emailBlurb = 'Please sign this document sent from the Node example.';
 
   // Read the file from the document and convert it to a Base64String
-  const pdfBytes = fs.readFileSync(path.resolve(__dirname, fileName)),
-    pdfBase64 = pdfBytes.toString('base64');
+  const pdfBytes = fs.readFileSync(path.resolve(__dirname, fileName));
+  const pdfBase64 = pdfBytes.toString('base64');
 
   // Create the document request object
   const doc = docusign.Document.constructFromObject({
     documentBase64: pdfBase64,
     fileExtension: 'pdf', // You can send other types of documents too.
     name: 'Sample document',
-    documentId: '1',
+    documentId: '1'
   });
 
   // Create a documents object array for the envelope definition and add the doc object
@@ -85,10 +74,10 @@ async function sendEnvelopeController(req, res) {
 
   // Create the signer object with the previously provided name / email address
   const signer = docusign.Signer.constructFromObject({
-    name: signerName,
-    email: signerEmail,
+    email,
+    name: user,
     routingOrder: '1',
-    recipientId: '1',
+    recipientId: '1'
   });
 
   // Create the signHere tab to be placed on the envelope
@@ -98,7 +87,7 @@ async function sendEnvelopeController(req, res) {
     recipientId: '1',
     tabLabel: 'SignHereTab',
     xPosition: '195',
-    yPosition: '147',
+    yPosition: '147'
   });
 
   // Create the overall tabs object for the signer and add the signHere tabs array
@@ -108,26 +97,24 @@ async function sendEnvelopeController(req, res) {
   // Add the recipients object to the envelope definition.
   // It includes an array of the signer objects.
   envDef.recipients = docusign.Recipients.constructFromObject({
-    signers: [signer],
+    signers: [signer]
   });
   // Set the Envelope status. For drafts, use 'created' To send the envelope right away, use 'sent'
   envDef.status = 'sent';
 
   // Send the envelope
-  let envelopesApi = new docusign.EnvelopesApi(),
-    results;
+  let envelopesApi = new docusign.EnvelopesApi();
+  let results;
 
   try {
     results = await envelopesApi.createEnvelope(ACCOUNT_ID, {
-      envelopeDefinition: envDef,
+      envelopeDefinition: envDef
     });
   } catch (e) {
     let body = e.response && e.response.body;
     if (body) {
       // DocuSign API exception
-      res.status(e.response.status).json(JSON.stringify({
-        body,
-      }))
+      return res.status(e.response.status).json(JSON.stringify({ body }));
     } else {
       // Not a DocuSign exception
       throw e;
@@ -135,13 +122,11 @@ async function sendEnvelopeController(req, res) {
   }
   // Envelope has been created:
   if (results) {
-    res.status(200).json(JSON.stringify({
-      results
-    }))
+    return res.status(200).json(JSON.stringify({ results }))
   }
 }
 
-// The mainline
-app.post('/', sendEnvelopeController)
+app.post('/', sendEnvelopeController);
 app.listen(port, host);
+
 console.log(`Your server is running on ${host}:${port}`);
