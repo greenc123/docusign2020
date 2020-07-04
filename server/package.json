@@ -1,7 +1,7 @@
 {
-  "name": "DocuSign_quick_start_node_send_envelope",
+  "name": "docusign2020",
   "version": "1.0.0",
-  "description": "DocuSign simple node Envelopes::send",
+  "description": "Hackathon DocuSign2020 for FCS certifications",
   "main": "index.js",
   "scripts": {
     "debug": "node  --inspect-brk index.js",
@@ -25,5 +25,8 @@
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "moment": "^2.24.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
