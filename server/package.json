@@ -6,6 +6,7 @@
   "scripts": {
     "debug": "node  --inspect-brk index.js",
     "dev": "PORT=4000 nodemon server.js",
+    "prod": "PORT=4000 NODE_ENV=production node server.js",
     "start": "PORT=4000 node server.js"
   },
   "repository": {

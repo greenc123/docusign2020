@@ -57,6 +57,12 @@ to the publicly visible code repository, including an applicable open source lic
 https://opensource.org/licenses
 
 # Docker
-The frontend/backend is proxied through nginx and served on port 80. The backend is served on the URL `/api`. 
+[Docker Compose](https://docs.docker.com/compose/install/) can be used to build the application.
+The frontend/backend is proxied through nginx and served on port 80. The backend is served on the URL `/api` (note: the root doc is `localhost/api/`). A make command is provided:
 
     make docker
+
+
+Or directly with compose
+
+    ACCOUNT_ID=... ACCESS_TOKEN=... docker-compose up --build

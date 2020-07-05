@@ -14,11 +14,14 @@ services:
       application:
         aliases:
           - backend
-    ports:
-      - 4000:4000
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: "${MONGODB_PASSWORD:-test}"
+      DB: db
+      HOST: backend
+      ACCESS_TOKEN: "$ACCESS_TOKEN"
+      ACCOUNT_ID: "$ACCOUNT_ID"
+
   db:
     image: mongo:4.2.8
     networks:
