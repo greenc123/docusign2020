@@ -1,22 +1,38 @@
-const docusign = require('docusign-esign');
-const bodyParser = require('body-parser');
-const express = require('express');
-const process = require('process');
-const path = require('path');
-const fs = require('fs');
-require('dotenv').config();
+const docusign = require('docusign-esign')
+const bodyParser = require('body-parser')
+const express = require('express')
+const process = require('process')
+const path = require('path')
+const fs = require('fs')
+const mongoose = require('mongoose');
+require('dotenv').config()
 
-const port = process.env.PORT || 3000;
-const host = process.env.HOST || 'localhost';
-const app = express();
+const port = process.env.PORT || 3000
+const host = process.env.HOST || 'localhost'
+const db = process.env.DB || 'localhost'
 
-const basePath = 'https://demo.docusign.net/restapi';
+const app = express()
 
+const basePath = 'https://demo.docusign.net/restapi'
+const envir = process.env;
+const db_auth = process.env.MONGO_INITDB_ROOT_USERNAME + ':' + process.env.MONGO_INITDB_ROOT_PASSWORD;
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse applicaiton/json
 app.use(bodyParser.json());
+
+
+mongoose.connect('mongodb://' + db_auth + '@' + db + '/', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+
+const connection = mongoose.connection;
+
+connection.once("open", function() {
+  console.log("MongoDB database connection established successfully");
+});
 
 async function sendEnvelopeController(req, res) {
   const { email, user } = req.body;
@@ -126,7 +142,37 @@ async function sendEnvelopeController(req, res) {
   }
 }
 
-app.post('/', sendEnvelopeController);
+async function testController(req, res) {
+  res.status(200).json(JSON.stringify({'test':'ok'}))
+}
+
+const employees = require("./demo_model");
+async function saveEmployees(req, res) {
+    console.log(req.body);
+    employees.insertMany(req.body, function(err, result) {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(result);
+    }
+  });
+}
+
+async function getEmployees(req, res) {
+  employees.find({}, function(err, result) {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(result);
+    }
+  });
+}
+
+// The mainline
+app.get('/test', testController)
+app.get('/employees', getEmployees)
+app.post('/employees', saveEmployees)
+app.post('/', sendEnvelopeController)
 app.listen(port, host);
 
 console.log(`Your server is running on ${host}:${port}`);
