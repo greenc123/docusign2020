@@ -4,7 +4,8 @@ const express = require('express')
 const process = require('process')
 const path = require('path')
 const fs = require('fs')
-require('dotenv').config() 
+const mongoose = require('mongoose');
+require('dotenv').config()
 
 const port = process.env.PORT || 3000
 const host = process.env.HOST || 'localhost'
@@ -42,7 +43,7 @@ async function sendEnvelopeController(req, res) {
   // or environment variables.
 
   console.log(envir, 'envir')
-  const {ACCESS_TOKEN, ACCOUNT_ID } = envir 
+  const {ACCESS_TOKEN, ACCOUNT_ID } = envir
 
   const signerName = user;
   const signerEmail = email;

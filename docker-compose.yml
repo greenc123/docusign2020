@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  frontend:
+    image: docusign_preassessment:client
+    build: client
+    networks:
+      application:
+        aliases:
+          - frontend
+  backend:
+    image: docusign_preassessment:backend
+    build: server
+    networks:
+      application:
+        aliases:
+          - backend
+    ports:
+      - 4000:4000
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: "${MONGODB_PASSWORD:-test}"
+  db:
+    image: mongo:4.2.8
+    networks:
+      application:
+        aliases:
+          - db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: "${MONGODB_PASSWORD:-test}"
+  nginx:
+    depends_on: [frontend, backend]
+    build: proxy
+    networks:
+      application:
+        aliases:
+          - nginx
+    image: nginx:1.19
+    ports:
+      - 80:80
+
+networks:
+  application:
