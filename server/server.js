@@ -142,10 +142,6 @@ async function sendEnvelopeController(req, res) {
   }
 }
 
-async function testController(req, res) {
-  res.status(200).json(JSON.stringify({'test':'ok'}))
-}
-
 const employees = require("./demo_model");
 async function saveEmployees(req, res) {
     console.log(req.body);
@@ -169,7 +165,6 @@ async function getEmployees(req, res) {
 }
 
 // The mainline
-app.get('/test', testController)
 app.get('/employees', getEmployees)
 app.post('/employees', saveEmployees)
 app.post('/', sendEnvelopeController)
