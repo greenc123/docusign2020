@@ -1,22 +1,24 @@
-const docusign = require('docusign-esign')
-const bodyParser = require('body-parser')
-const express = require('express')
-const process = require('process')
-const path = require('path')
-const fs = require('fs')
-const mongoose = require('mongoose');
-require('dotenv').config()
+const docusign = require('docusign-esign');
+const bodyParser = require('body-parser');
+const express = require('express');
+const process = require('process');
+const path = require('path');
+const cors = require('cors');
+const fs = require('fs');
+require('dotenv').config();
 
-const port = process.env.PORT || 3000
-const host = process.env.HOST || 'localhost'
-const db = process.env.DB || 'localhost'
+const { PORT, HOST, DB, MONGO_INITDB_ROOT_USERNAME, MONGO_INITDB_ROOT_PASSWORD } = process.env;
+const port = PORT || 3000;
+const host = HOST || 'localhost';
+const db = DB || 'localhost';
+const app = express();
 
-const app = express()
+const basePath = 'https://demo.docusign.net/restapi';
+const dbAuth = `${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}`;
 
-const basePath = 'https://demo.docusign.net/restapi'
-const envir = process.env;
-const { MONGO_INITDB_ROOT_USERNAME, MONGO_INITDB_ROOT_PASSWORD } = envir;
-const db_auth = MONGO_INITDB_ROOT_USERNAME + ':' + MONGO_INITDB_ROOT_PASSWORD;
+// allow CORS
+app.use(cors());
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -25,21 +27,20 @@ app.use(bodyParser.json());
 
 (async () => {
   try {
-    await mongoose.connect('mongodb://' + db_auth + '@' + db + '/', {
+    await mongoose.connect(`mongodb://${dbAuth}@${db}/`, {
       useNewUrlParser: true,
       useUnifiedTopology: true
     });
   } catch (error) {
-    console.log("Unable to connect to mongodb: " + error);
+    console.error('Unable to connect to mongodb: ' + error);
     throw error;
   }
 })();
 
-
 const connection = mongoose.connection;
 
-connection.once("open", function() {
-  console.log("MongoDB database connection established successfully");
+connection.once('open', function() {
+  console.log('MongoDB database connection established successfully');
 });
 
 async function sendEnvelopeController(req, res) {
@@ -55,7 +56,7 @@ async function sendEnvelopeController(req, res) {
   }
 
   if (errorMessages.length > 0) {
-    return res.status(400).json(JSON.stringify({ errors: errorMessages }));
+    return res.status(200).json(JSON.stringify({ errors: errorMessages }));
   }
 
   const { ACCESS_TOKEN, ACCOUNT_ID } = process.env;
@@ -151,6 +152,7 @@ async function sendEnvelopeController(req, res) {
 }
 
 const Employee = require("./model/demo");
+
 async function saveEmployees(req, res) {
     console.log(req.body);
     Employee.insertMany(req.body, function(err, result) {
