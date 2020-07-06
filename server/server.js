@@ -15,18 +15,26 @@ const app = express()
 
 const basePath = 'https://demo.docusign.net/restapi'
 const envir = process.env;
-const db_auth = process.env.MONGO_INITDB_ROOT_USERNAME + ':' + process.env.MONGO_INITDB_ROOT_PASSWORD;
+const { MONGO_INITDB_ROOT_USERNAME, MONGO_INITDB_ROOT_PASSWORD } = envir;
+const db_auth = MONGO_INITDB_ROOT_USERNAME + ':' + MONGO_INITDB_ROOT_PASSWORD;
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse applicaiton/json
 app.use(bodyParser.json());
 
+(async () => {
+  try {
+    await mongoose.connect('mongodb://' + db_auth + '@' + db + '/', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+  } catch (error) {
+    console.log("Unable to connect to mongodb: " + error);
+    throw error;
+  }
+})();
 
-mongoose.connect('mongodb://' + db_auth + '@' + db + '/', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
 
 const connection = mongoose.connection;
 
@@ -142,10 +150,10 @@ async function sendEnvelopeController(req, res) {
   }
 }
 
-const employees = require("./demo_model");
+const Employee = require("./model/demo");
 async function saveEmployees(req, res) {
     console.log(req.body);
-    employees.insertMany(req.body, function(err, result) {
+    Employee.insertMany(req.body, function(err, result) {
     if (err) {
       res.send(err);
     } else {
@@ -155,7 +163,7 @@ async function saveEmployees(req, res) {
 }
 
 async function getEmployees(req, res) {
-  employees.find({}, function(err, result) {
+  Employee.find({}, function(err, result) {
     if (err) {
       res.send(err);
     } else {
