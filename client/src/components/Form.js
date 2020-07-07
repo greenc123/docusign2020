@@ -94,10 +94,11 @@ const Form = () => {
     }, {});
 
     if (activeStep === formFields.length) {
+      const { REACT_APP_BACKEND_URL } = process.env;
       setLoading(true);
       (async () => {
         try {
-          const { body } = await request.post('http://localhost:4000/').send(getFormData()).accept('json');
+          const { body } = await request.post(REACT_APP_BACKEND_URL).send(getFormData()).accept('json');
           const json = JSON.parse(body);
           setLoading(false);
         } catch (err) {
