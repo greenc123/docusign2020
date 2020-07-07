@@ -1,5 +1,6 @@
 const docusign = require('docusign-esign');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const express = require('express');
 const process = require('process');
 const path = require('path');
