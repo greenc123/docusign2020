@@ -1,24 +1,25 @@
-const docusign = require('docusign-esign')
-const bodyParser = require('body-parser')
-const express = require('express')
-const process = require('process')
-const path = require('path')
-const fs = require('fs')
-const mongoose = require('mongoose');
+const docusign = require('docusign-esign');
+const bodyParser = require('body-parser');
+const express = require('express');
+const process = require('process');
+const path = require('path');
+const cors = require('cors');
+const fs = require('fs');
+require('dotenv').config();
 const translate = require('./translate');
 
-require('dotenv').config()
+const { PORT, HOST, DB, MONGO_INITDB_ROOT_USERNAME, MONGO_INITDB_ROOT_PASSWORD } = process.env;
+const port = PORT || 3000;
+const host = HOST || 'localhost';
+const db = DB || 'localhost';
+const app = express();
 
-const port = process.env.PORT || 3000
-const host = process.env.HOST || 'localhost'
-const db = process.env.DB || 'localhost'
+const basePath = 'https://demo.docusign.net/restapi';
+const dbAuth = `${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}`;
 
-const app = express()
+// allow CORS
+app.use(cors());
 
-const basePath = 'https://demo.docusign.net/restapi'
-const envir = process.env;
-const { MONGO_INITDB_ROOT_USERNAME, MONGO_INITDB_ROOT_PASSWORD } = envir;
-const db_auth = MONGO_INITDB_ROOT_USERNAME + ':' + MONGO_INITDB_ROOT_PASSWORD;
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -38,7 +39,7 @@ async function sendEnvelopeController(req, res) {
   }
 
   if (errorMessages.length > 0) {
-    return res.status(400).json(JSON.stringify({ errors: errorMessages }));
+    return res.status(200).json(JSON.stringify({ errors: errorMessages }));
   }
 
   const { ACCESS_TOKEN, ACCOUNT_ID } = process.env;
@@ -134,8 +135,8 @@ async function sendEnvelopeController(req, res) {
 }
 
 app.post('/', sendEnvelopeController);
+app.post('/translate', translate);
 app.listen(port, host);
 
-app.post('/translate', translate);
 
 console.log(`Your server is running on ${host}:${port}`);
