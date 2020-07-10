@@ -5,31 +5,30 @@ import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
-export default function PaymentForm() {
+const PaymentForm = ({
+  initialValues,
+  setFormField = () => {}
+}) => {
   return (
     <>
       <Typography variant="h6" gutterBottom>
         Payment method
       </Typography>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <TextField required id="cardName" label="Name on card" fullWidth autoComplete="cc-name" />
-        </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12}>
           <TextField
             required
-            id="cardNumber"
-            label="Card number"
             fullWidth
-            autoComplete="cc-number"
+            label="Email"
+            value={initialValues['email'] || ''}
+            onChange={({ target: { value } }) => setFormField('email', value)}
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          <TextField required id="expDate" label="Expiry date" fullWidth autoComplete="cc-exp" />
+          <TextField id="expDate" label="Expiry date" fullWidth autoComplete="cc-exp" />
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField
-            required
             id="cvv"
             label="CVV"
             helperText="Last three digits on signature strip"
@@ -46,4 +45,6 @@ export default function PaymentForm() {
       </Grid>
     </>
   );
-}
+};
+
+export default PaymentForm;
