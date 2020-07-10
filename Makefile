@@ -16,7 +16,6 @@ docker:
 populate_employees_demo_data:
 	curl -H 'Content-Type: application/json' -XPOST -d '$(shell cat employee_demo.json)' $(BACKEND)/employees
 
-
 .PHONY: employees_demo_data
 employees_demo_data:
 	curl $(BACKEND)/employees

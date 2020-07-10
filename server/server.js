@@ -5,6 +5,8 @@ const process = require('process')
 const path = require('path')
 const fs = require('fs')
 const mongoose = require('mongoose');
+const translate = require('./translate');
+
 require('dotenv').config()
 
 const port = process.env.PORT || 3000
@@ -22,25 +24,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse applicaiton/json
 app.use(bodyParser.json());
-
-(async () => {
-  try {
-    await mongoose.connect('mongodb://' + db_auth + '@' + db + '/', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
-  } catch (error) {
-    console.log("Unable to connect to mongodb: " + error);
-    throw error;
-  }
-})();
-
-
-const connection = mongoose.connection;
-
-connection.once("open", function() {
-  console.log("MongoDB database connection established successfully");
-});
 
 async function sendEnvelopeController(req, res) {
   const { email, user } = req.body;
@@ -150,32 +133,9 @@ async function sendEnvelopeController(req, res) {
   }
 }
 
-const Employee = require("./model/demo");
-async function saveEmployees(req, res) {
-    console.log(req.body);
-    Employee.insertMany(req.body, function(err, result) {
-    if (err) {
-      res.send(err);
-    } else {
-      res.send(result);
-    }
-  });
-}
-
-async function getEmployees(req, res) {
-  Employee.find({}, function(err, result) {
-    if (err) {
-      res.send(err);
-    } else {
-      res.send(result);
-    }
-  });
-}
-
-// The mainline
-app.get('/employees', getEmployees)
-app.post('/employees', saveEmployees)
-app.post('/', sendEnvelopeController)
+app.post('/', sendEnvelopeController);
 app.listen(port, host);
+
+app.post('/translate', translate);
 
 console.log(`Your server is running on ${host}:${port}`);
