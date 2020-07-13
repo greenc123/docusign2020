@@ -1,12 +1,12 @@
 const docusign = require('docusign-esign');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const express = require('express');
 const process = require('process');
 const path = require('path');
 const cors = require('cors');
 const fs = require('fs');
 require('dotenv').config();
+const translate = require('./translate');
 
 const { PORT, HOST, DB, MONGO_INITDB_ROOT_USERNAME, MONGO_INITDB_ROOT_PASSWORD } = process.env;
 const port = PORT || 3000;
@@ -25,24 +25,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse applicaiton/json
 app.use(bodyParser.json());
-
-(async () => {
-  try {
-    await mongoose.connect(`mongodb://${dbAuth}@${db}/`, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
-  } catch (error) {
-    console.error('Unable to connect to mongodb: ' + error);
-    throw error;
-  }
-})();
-
-const connection = mongoose.connection;
-
-connection.once('open', function() {
-  console.log('MongoDB database connection established successfully');
-});
 
 async function sendEnvelopeController(req, res) {
   const { email, user } = req.body;
@@ -152,33 +134,9 @@ async function sendEnvelopeController(req, res) {
   }
 }
 
-const Employee = require("./model/demo");
-
-async function saveEmployees(req, res) {
-    console.log(req.body);
-    Employee.insertMany(req.body, function(err, result) {
-    if (err) {
-      res.send(err);
-    } else {
-      res.send(result);
-    }
-  });
-}
-
-async function getEmployees(req, res) {
-  Employee.find({}, function(err, result) {
-    if (err) {
-      res.send(err);
-    } else {
-      res.send(result);
-    }
-  });
-}
-
-// The mainline
-app.get('/employees', getEmployees)
-app.post('/employees', saveEmployees)
-app.post('/', sendEnvelopeController)
+app.post('/', sendEnvelopeController);
+app.post('/translate', translate);
 app.listen(port, host);
+
 
 console.log(`Your server is running on ${host}:${port}`);
