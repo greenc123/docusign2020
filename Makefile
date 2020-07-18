@@ -11,12 +11,3 @@ export ACCESS_TOKEN=$(shell $(call get_value_dotenv_or_env,server,ACCESS_TOKEN))
 .PHONY: docker
 docker:
 	docker-compose up --build
-
-.PHONY: populate_employees_demo_data
-populate_employees_demo_data:
-	curl -H 'Content-Type: application/json' -XPOST -d '$(shell cat employee_demo.json)' $(BACKEND)/employees
-
-
-.PHONY: employees_demo_data
-employees_demo_data:
-	curl $(BACKEND)/employees
