@@ -24,11 +24,4 @@ const getAccessToken = async () => {
   return data.access_token
 };
 
-/*
-const token = getAccessToken().then((result) => {
-  //console.log('res', result)
-  return result
-})
-*/
-
 module.exports = getAccessToken
