@@ -12,6 +12,8 @@ params.append('client_secret', 'WUJ6l9iu5I-vUCd689PKyl.BlP_h~tn2yo');
 const getAccessToken = async () => {
   const url =
     'https://login.microsoftonline.com/d5912c77-e19e-4140-b57a-7d521b24bc36/oauth2/token';
+
+  try {
   const response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -22,6 +24,10 @@ const getAccessToken = async () => {
 
   const data = await response.json()
   return data.access_token
+  } catch (err) {
+    console.log('Error in getAccessToken.js', err)
+    throw err
+  }
 };
 
 module.exports = getAccessToken
