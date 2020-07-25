@@ -1,34 +1,45 @@
 const fetch = require('node-fetch');
 const {URLSearchParams} = require('url');
+const process = require('process')
+require('dotenv').config();
 
 const params = new URLSearchParams();
-params.append('resource', 'https://fscpreassessmentdemo.crm.dynamics.com');
-params.append('client_id', '232bc5fc-3143-4783-abd3-eaed28124f15');
+const { 
+  DYNAMICS_SERVICE_USER, 
+  DYNAMICS_CLIENT_ID, 
+  DYNAMICS_PASSWORD, 
+  DYNAMICS_CLIENT_SECRET, 
+  DYNAMICS_RESOURCE,
+  DYNAMICS_TENANT_ID
+} = process.env;
+
+params.append('username', DYNAMICS_SERVICE_USER);
+params.append('client_id', DYNAMICS_CLIENT_ID);
+params.append('password', DYNAMICS_PASSWORD);
+params.append('client_secret', DYNAMICS_CLIENT_SECRET);
+params.append('resource', DYNAMICS_RESOURCE);
 params.append('grant_type', 'password');
-params.append('username', 'service@fscpreassessmentdemo.onmicrosoft.com');
-params.append('password', 'ZKHaXIzFwblIUgUXErcdrw7hu9');
-params.append('client_secret', 'WUJ6l9iu5I-vUCd689PKyl.BlP_h~tn2yo');
 
 const getAccessToken = async () => {
-  console.log("getAccessToken call!")
-  const url =
-    'https://login.microsoftonline.com/d5912c77-e19e-4140-b57a-7d521b24bc36/oauth2/token';
+    const url = `https://login.microsoftonline.com/${DYNAMICS_TENANT_ID}/oauth2/token`;
 
   try {
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: params,
-  })
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: params,
+    });
 
-  const data = await response.json()
-  return data.access_token
+    const data = await response.json();
+    return data.access_token;
   } catch (err) {
-    console.log('Error in getAccessToken.js', err)
-    throw err
+    console.log('Error in getAccessToken.js', err);
+    throw err;
   }
 };
 
-module.exports = getAccessToken
+getAccessToken()
+
+module.exports = getAccessToken;
