@@ -27,7 +27,10 @@
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "moment": "^2.24.0",
-    "mongoose": "^5.9.21"
+    "mongoose": "^5.9.21",
+    "node-fetch": "^2.6.0",
+    "process": "^0.11.10",
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
