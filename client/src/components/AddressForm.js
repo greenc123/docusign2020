@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import UploadMedia from './UploadMedia'
 
 const AddressForm = ({
   initialValues,
@@ -22,8 +23,7 @@ const AddressForm = ({
             name="user"
             label="Full Name"
             value={initialValues['user'] || ''}
-            onChange={({ target: { value } }) => setFormField('user', value)}
-          />
+            onChange={({ target: { value } }) => setFormField('user', value)} />
         </Grid>
         <Grid item xs={12}>
           <TextField
@@ -80,6 +80,7 @@ const AddressForm = ({
           />
         </Grid>
       </Grid>
+    <UploadMedia/>
     </>
   );
 };
