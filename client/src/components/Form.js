@@ -149,7 +149,10 @@ const Form = () => {
                     </Button>
                   )}
 
-                <Button className={classes.button}>{"Save Progress"}</Button>
+                <Button onClick={() => console.log("Progress being saved")} className={classes.button}>
+                  {"Save Progress"}
+                </Button>
+
                   <Button
                     disabled={loading}
                     variant="contained"
