@@ -4,14 +4,15 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import TextArea from './TextArea' 
+import '../App.css'
 
 const AddressForm = ({
   initialValues,
   setFormField = () => {}
 }) => {
   return (
-    <>
-      <Typography variant="h6" gutterBottom>
+    <> <Typography variant="h6" gutterBottom>
         Shipping address
       </Typography>
       <Grid container spacing={3}>
@@ -73,6 +74,9 @@ const AddressForm = ({
             autoComplete="shipping country"
           />
         </Grid>
+
+        <TextArea/>
+
         <Grid item xs={12}>
           <FormControlLabel
             control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
