@@ -6,12 +6,12 @@ var { DYNAMICS_ENDPOINT, DYNAMICS_BASE_PATH } = envir;
 
 const getAccessToken = require('./getAccessToken');
 
-const getAccount = async () => {
+const getSpecies = async () => {
   const token = await getAccessToken();
   console.log('token', token);
   if (!token) return {}
   try {
-    url = `${DYNAMICS_ENDPOINT}/fsc_countrydatas`
+    url = `${DYNAMICS_ENDPOINT}/fsc_specieses`
     const response = await fetch(url, {
       headers: {
         Accept: 'application/json',
@@ -22,13 +22,13 @@ const getAccount = async () => {
     console.log('data', data)
     return data
   } catch (err) {
-    console.log('Error in getAccount.js', err)
+    console.log('Error in getSpecies.js', err)
     throw err
   }
 }
 
-async function getAccountEndpoint(req, res) {
-  res.send(await getAccount());
+async function getSpeciesEndpoint(req, res) {
+  res.send(await getSpecies());
 }
 
-module.exports = getAccountEndpoint;
+module.exports = getSpeciesEndpoint;

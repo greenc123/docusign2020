@@ -7,9 +7,39 @@ const cors = require('cors');
 const fs = require('fs');
 require('dotenv').config();
 const translate = require('./translate');
+
 const getAccount = require('./getAccount');
 const newAccount = require('./newAccount');
+
+const getCertificate = require('./getCertificate');
+const newCertificate = require('./newCertificate');
+
+const getCertificateAttachment = require('./getCertificateAttachment');
+const newCertificateAttachment = require('./newCertificateAttachment');
+
+const getContact = require('./getContact');
+const newContact = require('./newContact');
+
 const getCountryData = require('./getCountryData');
+const newCountryData = require('./newCountryData');
+
+const getEvaluation = require('./getEvaluation');
+const newEvaluation = require('./newEvaluation');
+
+const getLicenseAgreement = require('./getLicenseAgreement');
+const newLicenseAgreement = require('./newLicenseAgreement');
+
+const getProduct = require('./getProduct');
+const newProduct = require('./newProduct');
+
+const getProductSpecies = require('./getProductSpecies');
+const newProductSpecies = require('./newProductSpecies');
+
+const getSite = require('./getSite');
+const newSite = require('./newSite');
+
+const getSpecies = require('./getSpecies');
+const newSpecies = require('./newSpecies');
 
 const { PORT, HOST, DB, MONGO_INITDB_ROOT_USERNAME, MONGO_INITDB_ROOT_PASSWORD } = process.env;
 const port = PORT || 3000;
@@ -139,7 +169,36 @@ async function sendEnvelopeController(req, res) {
 
 app.get('/accounts', getAccount);
 app.post('/accounts', newAccount);
+
+app.get('/certificate', getCertificate);
+app.post('/certificate', newCertificate);
+
+app.get('/certificate-attachment', getCertificateAttachment);
+app.post('/certificate-attachment', newCertificateAttachment);
+
+app.get('/contact', getContact);
+app.post('/contact', newContact);
+
 app.get('/country-data', getCountryData);
+app.post('/country-data', newCountryData);
+
+app.get('/evaluation', getEvaluation);
+app.post('/evaluation', newEvaluation);
+
+app.get('/license-agreement', getLicenseAgreement);
+app.post('/license-agreement', newLicenseAgreement);
+
+app.get('/product', getProduct);
+app.post('/product', newProduct);
+
+app.get('/product-species', getProductSpecies);
+app.post('/product-species', newProductSpecies);
+
+app.get('/site', getSite);
+app.post('/site', newSite);
+
+app.get('/species', getSpecies);
+app.post('/species', newSpecies);
 
 app.post('/', sendEnvelopeController);
 app.post('/translate', translate);
