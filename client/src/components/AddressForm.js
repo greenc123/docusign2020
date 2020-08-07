@@ -77,6 +77,7 @@ const AddressForm = ({
         </Grid>
 
         <TextArea/>
+        <UploadMedia/>
 
         <Grid item xs={12}>
           <FormControlLabel
@@ -85,7 +86,6 @@ const AddressForm = ({
           />
         </Grid>
       </Grid>
-    <UploadMedia/>
     </>
   );
 };
