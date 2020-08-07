@@ -23,6 +23,8 @@ const getCountryData = async () => {
   }
 }
 
-getCountryData()
+async function getCountryDataEndpoint(req, res) {
+  res.send(await getCountryData());
+}
 
-module.exports = getCountryData;
+module.exports = getCountryDataEndpoint;

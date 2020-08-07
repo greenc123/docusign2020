@@ -7,6 +7,9 @@ const cors = require('cors');
 const fs = require('fs');
 require('dotenv').config();
 const translate = require('./translate');
+const getAccount = require('./getAccount');
+const newAccount = require('./newAccount');
+const getCountryData = require('./getCountryData');
 
 const { PORT, HOST, DB, MONGO_INITDB_ROOT_USERNAME, MONGO_INITDB_ROOT_PASSWORD } = process.env;
 const port = PORT || 3000;
@@ -133,6 +136,10 @@ async function sendEnvelopeController(req, res) {
     return res.status(200).json(JSON.stringify({ results }))
   }
 }
+
+app.get('/accounts', getAccount);
+app.post('/accounts', newAccount);
+app.get('/country-data', getCountryData);
 
 app.post('/', sendEnvelopeController);
 app.post('/translate', translate);

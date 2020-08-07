@@ -4,7 +4,8 @@ one language to another. */
 /* This template relies on the request module, a simplified and user friendly
 way to make HTTP requests. */
 const https = require('https');
-const uuidv4 = require('uuid/v4');
+const { v4: uuidv4 } = require('uuid');
+
 require('dotenv').config()
 const envir = process.env;
 var { TRANSLATOR_ENDPOINT, TRANSLATOR_SUBSCRIPTION_KEY } = envir;

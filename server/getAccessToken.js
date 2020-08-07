@@ -4,11 +4,11 @@ const process = require('process')
 require('dotenv').config();
 
 const params = new URLSearchParams();
-const { 
-  DYNAMICS_SERVICE_USER, 
-  DYNAMICS_CLIENT_ID, 
-  DYNAMICS_PASSWORD, 
-  DYNAMICS_CLIENT_SECRET, 
+const {
+  DYNAMICS_SERVICE_USER,
+  DYNAMICS_CLIENT_ID,
+  DYNAMICS_PASSWORD,
+  DYNAMICS_CLIENT_SECRET,
   DYNAMICS_RESOURCE,
   DYNAMICS_TENANT_ID
 } = process.env;
@@ -39,7 +39,5 @@ const getAccessToken = async () => {
     throw err;
   }
 };
-
-getAccessToken()
 
 module.exports = getAccessToken;
