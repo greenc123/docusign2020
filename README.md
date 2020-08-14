@@ -13,12 +13,6 @@ Collaborators:
 
 https://devpost.com/oliveiragabriela
 
-https://devpost.com/joeystevens00
-
-https://devpost.com/coltonehrman
-
-https://devpost.com/allopez7
-
 https://devpost.com/greenc123
 
 Temp OAuth Token:
