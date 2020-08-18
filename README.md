@@ -11,6 +11,12 @@ https://www.youtube.com/watch?time_continue=8&v=MfiBJy16EZI&feature=emb_title
 
 Collaborators:
 
+https://devpost.com/coltonehrman
+
+https://devpost.com/allopez7
+
+https://devpost.com/joeystevens00
+
 https://devpost.com/oliveiragabriela
 
 https://devpost.com/greenc123
